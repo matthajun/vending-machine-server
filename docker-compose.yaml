@@ -1,0 +1,10 @@
+services:
+  server:
+    image: vending-machine-server
+    build:
+      context: './'
+    ports:
+      - '3000:3000'
+    volumes:
+      - './:/usr/src/app:z'
+      - '/tmp/vending-machine-server/yarn-cache/:/usr/local/share/.cache/yarn/v6:z'
