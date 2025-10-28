@@ -234,7 +234,7 @@ export class OrderService implements OnModuleInit {
    * E2e 테스트 전용 함수
    * 다시 Default 상태의 자판기로 되돌림
    */
-  public resetStateToDefault(): void {
+  resetStateToDefault(): void {
     const DEFAULT_DRINKS = [
       { id: 'cola', name: '콜라', price: 1100, stock: 5 },
       { id: 'water', name: '물', price: 600, stock: 10 },
