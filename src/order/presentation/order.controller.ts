@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
-import { OrderService } from '../application/order.service';
+import { OrderService } from '../application/service/order.service';
 import { plainToInstance } from 'class-transformer';
 import {
   CancelOrderResponse,

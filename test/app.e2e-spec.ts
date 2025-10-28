@@ -2,7 +2,7 @@ import * as request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { AppModule } from '../src/app.module';
-import { OrderService } from '../src/order/application/order.service';
+import { OrderService } from '../src/order/application/service/order.service';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;

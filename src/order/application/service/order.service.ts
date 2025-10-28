@@ -3,15 +3,15 @@ import {
   VendingMachineStatus,
   TransactionResult,
   Drink,
-} from './interface/order.interface';
+} from '../interface/order.interface';
 import {
   InvalidMoneyException,
   InsufficientFundsException,
   OutOfStockException,
   InvalidSelectionException,
   PaymentFailedException,
-} from './exception/order.service.exception';
-import { VendingMachine } from '../domain/vending-machine';
+} from '../exception/order.service.exception';
+import { VendingMachine } from '../../domain/vending-machine';
 
 @Injectable()
 export class OrderService implements OnModuleInit {
