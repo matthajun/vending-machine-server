@@ -9,12 +9,12 @@ describe('AppController (e2e)', () => {
   let orderService: OrderService;
   let http;
 
-  // 테스트에 사용할 고정 ID 및 가격 (실제 서비스의 초기 상태와 일치해야 함)
+  // 테스트에 사용할 고정 ID 및 가격
   const COLA_ID = 'cola';
   const COLA_PRICE = 1100;
   const INITIAL_COLA_STOCK = 5;
 
-  // --- 테스트 환경 설정 ---
+  // 테스트 환경 설정
   beforeAll(async () => {
     const moduleFixture = await Test.createTestingModule({
       imports: [AppModule],
@@ -35,6 +35,7 @@ describe('AppController (e2e)', () => {
     orderService = app.get<OrderService>(OrderService);
   });
 
+  // 케이스 마다 자판기 변수를 초기화한다.
   beforeEach(() => {
     orderService.resetStateToDefault();
   });
@@ -43,7 +44,6 @@ describe('AppController (e2e)', () => {
     await app.close();
   });
 
-  // --- 테스트 시나리오 ---
   describe('GET /status', () => {
     it('초기 상태를 올바르게 반환해야 함', () => {
       return http
@@ -63,7 +63,7 @@ describe('AppController (e2e)', () => {
     });
   });
 
-  describe('시나리오 1: 현금 구매 (Happy Path)', () => {
+  describe('시나리오 1: 현금 구매', () => {
     it('1. POST /insert-cash: 현금 투입', async () => {
       await http
         .post('/insert-cash')

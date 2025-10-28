@@ -148,7 +148,11 @@ export class OrderService implements OnModuleInit {
   returnAllCash(): TransactionResult {
     const returnedAmount = this.vendingMachine.currentCashInput;
     if (returnedAmount === 0) {
-      return { message: '반환할 현금이 없습니다.' };
+      return {
+        message: '반환할 현금이 없습니다.',
+        change: 0,
+        currentCashInput: 0,
+      };
     }
     const actualReturned = this.vendingMachine.returnChange(returnedAmount); // 잔돈통에서 현금 반환
 
@@ -160,15 +164,15 @@ export class OrderService implements OnModuleInit {
   }
 
   /**
-   * 주문 취소
-   * 현재 투입된 금액 모두 반환, 초기화
-   * 카드 결제 실패 시에도 이 로직으로 취소
+   * 음료 구매를 하지 않고 주문 취소, 투입된 금액 모두 반환, 초기화
+   * 카드 결제 실패 시에도 이 함수로 취소
    * @returns
    */
   cancelOrder(): TransactionResult {
     let message = '거래가 취소되었습니다.';
     let returnedCash = 0;
 
+    // 현금 결제 취소의 경우
     if (this.vendingMachine.currentCashInput > 0) {
       returnedCash = this.vendingMachine.returnChange(
         this.vendingMachine.currentCashInput,
@@ -176,6 +180,7 @@ export class OrderService implements OnModuleInit {
       message += `현금 ${returnedCash}원이 반환됩니다.`;
     }
 
+    // 카드 결제 취소의 경우
     if (this.vendingMachine.currentCardAmount > 0) {
       // 카드사 결제 취소 로직
       const isCancelled = this.simulateCardCancellation(
@@ -185,7 +190,7 @@ export class OrderService implements OnModuleInit {
         message += `카드 결제 ${this.vendingMachine.currentCardAmount}원이 취소되었습니다.`;
       } else {
         message += `카드 결제 ${this.vendingMachine.currentCardAmount}원 취소에 실패했습니다. 관리자에게 문의하세요.`;
-        // 취소 실패 시 추가 처리 로직 필요 (수동 환불 등)
+        // 취소 실패 시 추가 처리 로직 필요
       }
     }
 
@@ -221,9 +226,14 @@ export class OrderService implements OnModuleInit {
    */
   private simulateCardCancellation(amount: number): boolean {
     this.logger.log(`카드 결제 ${amount}원 취소 프로세스 중`);
+
     return true;
   }
 
+  /**
+   * E2e 테스트 전용 함수
+   * 다시 Default 상태의 자판기로 되돌림
+   */
   public resetStateToDefault(): void {
     const DEFAULT_DRINKS = [
       { id: 'cola', name: '콜라', price: 1100, stock: 5 },
@@ -238,14 +248,7 @@ export class OrderService implements OnModuleInit {
     };
 
     // 1. 음료 재고 초기화
-    this.vendingMachine.drinks = DEFAULT_DRINKS.map((drink) => {
-      return {
-        id: drink.id,
-        name: drink.name,
-        price: drink.price,
-        stock: drink.stock,
-      };
-    });
+    this.vendingMachine.drinks = DEFAULT_DRINKS;
 
     // 2. 잔돈 재고 초기화
     this.vendingMachine.availableChange = structuredClone(DEFAULT_CHANGE);

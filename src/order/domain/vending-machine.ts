@@ -39,6 +39,7 @@ export class VendingMachine {
     this.drinks.forEach((drink) => {
       if (drink.id === drinkId) {
         drink.stock--;
+
         // 현금 결제의 경우
         if (this.currentCashInput) {
           this.currentCashInput -= drink.price;
@@ -105,7 +106,7 @@ export class VendingMachine {
       );
     }
 
-    // 투입 금액 초기화
+    // 잔돈을 반환했으므로, 투입 금액 초기화
     this.currentCashInput = 0;
 
     return returnAmount;
